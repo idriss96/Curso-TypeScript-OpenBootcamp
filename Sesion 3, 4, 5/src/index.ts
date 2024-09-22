@@ -60,7 +60,7 @@ variosParams("Martín") // Martín tiene 18 años
 variosParams("Martín", "San José") // Martín San José tiene 18 años
 variosParams("Martín", undefined, 30) // Martín tiene 30 años
 variosParams("Martín", "San José", 30) // Martín San José tiene 30 años
-variosParams(nombre="Martín", apellidos="San José", edad=30); // Martín San José tiene 30 años
+variosParams("Martín", "San José", 30); // Martín San José tiene 30 años
 
 function ejemploVariosTipos(a: string | number ){
     if(typeof(a) === 'string'){
