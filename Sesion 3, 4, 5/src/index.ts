@@ -1,5 +1,9 @@
 // Funciones
 
+import { LISTA_CURSOS } from "./mock/cursos.mock";
+import { Curso } from "./models/Curso";
+import { Estudiante } from "./models/Estudiante";
+
 /**
  * Función que muestra un saludo por consola
  */
@@ -331,3 +335,53 @@ miTemporizador.empezar(); // Se inicia el timeout y cuando termine, se ejecuta l
 
 // Eliminar la ejecución de la función
 delete miTemporizador.terminar;
+
+class Estudiantes {
+    // Propiedades de clase 
+    nombre: string;
+    apellidos?:string;
+
+    //constructor 
+    constructor(nombre: string) {
+        // Inicializamos las propiedades
+        this.nombre = nombre;
+    }
+}
+
+
+// ** CLASES
+
+// Creamos un curso
+
+// const cursoTS: Curso = new Curso("TypeScript", 15);
+// const cursoJS: Curso = new Curso("JavaScript", 20);
+
+// const listaCursos: Curso[] = [];
+
+// listaCursos.push(cursoTS, cursoJS); // [Lista de cursos];
+
+// Usamos el MOCK
+const listaCursos: Curso[] = LISTA_CURSOS;
+
+// Creamos un estudiante
+
+const martin: Estudiante = new Estudiante("Martín", listaCursos, "San José");
+
+
+console.log(`${martin.nombre} estudia:`);
+// Iteramos por cada uno de ellos
+martin.cursos.forEach((curso: Curso) => {
+    console.log(`- ${curso.nombre} (${curso.horas} horas)`); // - Typescript (15 horas)
+})
+
+const cursoAngular: Curso = new Curso("Angular", 40);
+
+martin.cursos.push(cursoAngular); // Añadimos
+
+// Conocer las horas Estudiadas
+martin.horasEstudidas; // number
+
+
+// Saber la instancia de un objeto/variable
+// - TypeOf
+// - InstanceOf
