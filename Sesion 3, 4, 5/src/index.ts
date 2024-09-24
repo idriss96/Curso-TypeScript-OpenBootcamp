@@ -238,3 +238,96 @@ console.log(generatorSaga.next().value); // 1 (lo ha hecho el worker)
 console.log(generatorSaga.next().value); // 2 (lo ha hecho el worker)
 console.log(generatorSaga.next().value); // 3 (lo ha hecho el worker)
 console.log(generatorSaga.next().value); // 4 (lo ha hecho el watcher)
+
+// Sobrecarga de funciones
+
+function mostrarError(error: string | number): void{
+    console.log("Ha habido un error:", error);
+}
+
+
+
+
+// Persistencia de datos
+// 1. LocalStorage --> Almacena los datos en el navegador (no se eliminan automáticamente)
+// 2. SessionStorage --> La diferencia radica en la sesión de navegador. Es decir, los datos se persisten en la sesión de navegador
+// 3. Cookies --> Tienen una fecha de caducidad y también tienen un ámbito de URL
+
+
+// LocalStorage y SessionStorage
+function guardar(): void{
+    localStorage.set("nombre", "Martín");
+    sessionStorage.set("nombre", "Martín");
+}
+
+function leer(): void{
+    let nombre = localStorage.get("nombre");
+    let nombreSession = sessionStorage.get("nombre");
+}
+
+function borrarItem(item:string){
+    localStorage.removeItem(item);
+    sessionStorage.removeItem(item);
+}
+
+function borrarTodas(): void {
+    localStorage.clear();
+    sessionStorage.clear();
+}
+
+// Cookies
+
+// const cookieOptions = {
+//     name: "usuario", // string,
+//     value: "Martín", // string,
+//     maxAge: 10 * 60, // optional number (value in seconds),
+//     expires: new Date(2099, 10, 1), // optional Date,
+//     path: "/", // optional string,
+//   };
+
+// Seteamos la Cookie
+// setCookie(cookieOptions);
+
+// Leer una Cookie
+// let cookieLeida = getCookieValue("usuario");
+
+// Eliminar
+// deleteCookie("usuario");
+
+// Eliminar todas las Cookies
+// deleteAllCookies();
+
+
+// Clase Temporizador
+
+class Temporizador {
+
+    public terminar?: (tiempo:number) => void;
+
+    public empezar(): void {
+        setTimeout(() => {
+            // Comprobamos que exista la función terminar como callback
+            if(!this.terminar) return;
+
+            // Cuando haya pasado el tiempo, se ejecutará la función terminar
+            this.terminar(Date.now());
+        }, 10000)
+    }
+}
+
+
+const miTemporizador: Temporizador = new Temporizador();
+
+// Definimos la función del callback a ejecutar cuando termine el tiempo
+miTemporizador.terminar = (tiempo: number) => {
+    console.log("Evento terminado en:", tiempo)
+}
+
+// Lanzamos el temporizador
+miTemporizador.empezar(); // Se inicia el timeout y cuando termine, se ejecuta la función terminar()
+
+
+// setInterval(() => console.log("Tic"), 1000) // Imprimir "tic" cada segundo por consola
+
+// Eliminar la ejecución de la función
+delete miTemporizador.terminar;
