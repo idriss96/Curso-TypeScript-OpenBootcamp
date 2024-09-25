@@ -3,6 +3,9 @@
 import { LISTA_CURSOS } from "./mock/cursos.mock";
 import { Curso } from "./models/Curso";
 import { Estudiante } from "./models/Estudiante";
+import { ITarea, Nivel } from "./models/interfaces/ITarea";
+import { Jefe, Trabajador } from "./models/Persona";
+import { Programar } from "./models/Programar";
 
 /**
  * Función que muestra un saludo por consola
@@ -385,3 +388,114 @@ martin.horasEstudidas; // number
 // Saber la instancia de un objeto/variable
 // - TypeOf
 // - InstanceOf
+
+let fechaNacimiento = new Date(1991,10,10);
+
+if(fechaNacimiento instanceof Date){
+    console.log("Es una instancia de Date")
+}
+
+
+if(martin instanceof Estudiante){
+    console.log("Martín es un Estudiante")
+}
+
+// Herencioa y Polimorfismo
+
+let trabajador1 = new Trabajador("Martín", "San José", 30, 2000);
+let trabajador2 = new Trabajador("Pepe", "García", 21, 1000);
+let trabajador3 = new Trabajador("Juan", "González", 40, 3000);
+
+
+let jefe = new Jefe("Pablo", "García", 50);
+jefe.trabajadores.push(trabajador1, trabajador2, trabajador3);
+
+jefe.saludar();  // herencia de Persona
+
+jefe.trabajadores.forEach((trabajador:Trabajador) => {
+    trabajador.saludar(); // especificado en Trabajador 
+});
+
+
+// * Uso de Interfaces
+
+let programar: ITarea = {
+    titulo: 'Programar en TypeScript',
+    descripcion: 'Practicar con Katas para aprender a desarrollar con TS',
+    completada: false,
+    urgencia: Nivel.Urgente,
+    resumen: function (): string {
+        return `${this.titulo} - ${this.completada} - Nivel: ${this.urgencia}`
+    }
+}
+
+console.log(programar.resumen());
+
+
+// Tarea de Programación (implementa ITarea)
+
+let programarTS = new Programar("TypeScript", "Tarea de progración en TS", false, Nivel.Bloqueante);
+console.log(programarTS.resumen());
+
+
+// Decoradores experimentales --> @
+// - Clases
+// - Parámetros
+// - Métodos
+// - Propiedades
+
+
+function Override(label: string) {
+    return function (target:any, key:string){
+        Object.defineProperty(target, key, {
+            configurable: false,
+            get: () => label
+        })
+    }
+}
+
+class PruebaDecorador {
+   
+    nombre: string = "Martín"
+}
+
+let prueba = new PruebaDecorador();
+console.log(prueba.nombre) // "Prueba" siempre va a ser devuelto a través del get()
+
+
+
+// Otra función para usarla como decorador
+function SoloLectura(target: any, key: string){
+    Object.defineProperty(target, key, {
+        writable: false
+    })
+}
+
+
+class PruebaSoloLectura{
+   
+    nombre: string = '';
+}
+
+let pruebaLectura = new PruebaSoloLectura();
+pruebaLectura.nombre = "Martín";
+
+// console.log(pruebaLectura.nombre) // ==> Undefined, ya que no se le puede dar valor (es solo de lectura)
+
+
+// Decorador para parámetros de un método
+function mostrarPosicion(target:any, propertyKey: string, parameterIndex: number){
+    console.log("Posición", parameterIndex);
+}
+
+
+class PruebaMetodoDecorador {
+
+    prueba(a: string, @mostrarPosicion b: boolean){
+        console.log(b);
+    }
+
+}
+
+// Usamos el método con el parámetro y su decorador
+new PruebaMetodoDecorador().prueba('hola', false); 
